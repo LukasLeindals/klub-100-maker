@@ -2,9 +2,16 @@ Er du også træt af at høre den samme klub 100 igen og igen hver fredag inden 
 
 Alle disse problemer og mange flere er nu fortid - saml jeres yndlings YouTube/SoundCloud links i en .csv fil (Google Sheet -> export to csv), og producér en studio quality klub 100 på ~10 minutter.
 
-Brugt til at samle https://soundcloud.com/kenny-olsen/smkid-klub-2-7 af S/M+KID studiestarten '18. ./shoutouts/ og klub.csv brugt til denne klub 2^7 medfølger i dette repo.
+Brugt til at samle  ./shoutouts/ og klub.csv brugt til denne klub 2^7 medfølger i dette repo.
 
-# Hvordan, hvor og hvorfor gør jeg ting?
+Eksempler på brug af denne kan ses i mappen Examples, hvor csv og shoutouts kan findes:
+* Klub 2^7 18': https://soundcloud.com/kenny-olsen/smkid-klub-2-7 af S/M+KID studiestarten '18.
+* Klub 2^7 19': https://soundcloud.com/luke-leindance/smkid-klub27-2019 af S/M+KID studiestarten '19.
+* KLub 4^4: https://soundcloud.com/luke-leindance/klub-44 af S/M+KID studiestarten '19.
+
+OBS. de to Klub 2^7 samt 4^4 er lavet med en anden mappe struktur og vil derfor kræve en anden strukturering, se evt. https://github.com/falkaer/klub-100-maker.
+
+<!-- # Hvordan, hvor og hvorfor gør jeg ting?
 
 Før du kører noget som helst, bør indholdet af denne mappe have følgende struktur:
 
@@ -28,12 +35,14 @@ hvor ./shoutouts/n.wav indeholder skud ud'et til den n'te sang i klub 100en, hvi
 
 ## klub.csv
 
-Denne .csv fil indeholder information om sangene i en klub 100. Hver række svarer til en sang og et skud ud, hvor første kolonne er sangens navn, anden kolonne er et YouTube/SoundCloud link, og tredje kolonne er det timestamp (i sekunder) i sangen, hvor jeres ene minut af sangen skal begynde.
+Denne .csv fil indeholder information om sangene i en klub 100. Hver række svarer til en sang og et skud ud, hvor første kolonne er sangens navn, anden kolonne er et YouTube/SoundCloud link, og tredje kolonne er det timestamp (i sekunder) i sangen, hvor jeres ene minut af sangen skal begynde. -->
 
-## Forarbejde
+# Forarbejde
+For at kunne lave en klub 100, skal der udfyldes et sheet med hvilke sange man ønsker, samt evt hvilke shoutouts man vil have.
+
 Opbygningen af klub 100 foregår vha. 2 sheets, "Sange" og "Shoutouts". Templaten "sheet_template" kan anvendes.
 
-### Sange
+## Sange
 Arket “Sange” indeholder de sange som Klub 100 skal bestå af. 
 
 I feltet ”Sang - Kunstner” skal en title samt kunster angives i formatter “sang - kunstner”. 
@@ -46,7 +55,7 @@ I feltet “starttidspunkt (i sek)” angives det antal sekunder inde i klippet 
 
 Det er muligt selv at tilføje flere kolonner med ting, som fx en kommentar. Disse vil blive ignoreret i bygningen af klub 100.
 
-### Shoutouts
+## Shoutouts
 Arket “Shoutouts” indeholder de citater, som placeres mellem sangene.
 
 I feltet “Shoutout titel” gives en titel som indikere hvad der siges/er essencen af shoutoutet. Dette vil blive shoutoutets reference og lydoptagelsen skal have dette navn for at blive matchet med den rette sang. Denne kolonne er den eneste nødvendige, hvis man selv indspiller shoutouts.
@@ -57,10 +66,10 @@ I felterne “start tid (sek)” og “slut tid (sek)” angives start og slutti
 
 I feltet “downloadet” angives med et “x” om det er et citat der skal downloades uden om SoundCloud eller Youtube.
 
-### Stats
+## Stats
 I arket “Stats” findes forskellige optællinger og lignede over eksempelvis, hvor mange shoutouts der er fundet indtil videre.
 
-### Ideer
+## Ideer
 I arket “Ideer” kan indsættes ideer, som ikke indeholder diverse detaljer, som eksempelvis start tidspunkt.
 
 I feltet “Type” angives om det er en ide til en sang eller et shoutout.
@@ -69,7 +78,7 @@ I feltet “Idé” angives med fritekst hvad ideen er.
 
 
 
-## Byg mig en klub 100, tak
+# Byg mig en klub 100, tak
 
 * Placér klub.csv i samme mappe som scriptsne
 * Kør dl.py for at downloade alle sange til ./tracks/
@@ -77,7 +86,7 @@ I feltet “Idé” angives med fritekst hvad ideen er.
 * Kør prepare_all_shoutouts.py for at loudness normalisere alle skud ud, som ryger i ./prepared_shoutouts
 * Kør combine.py for at kombinere sange og skud ud til en endelig klub.mp3.
 
-## Kræver:
+# Kræver:
  * `python3`
  * `youtube-dl` - for at køre dl.py
  * `ffmpeg` - for at køre prepare_track.py, prepare_shoutout.py og combine.py
