@@ -11,14 +11,24 @@ if len(err) != 0:
     print(err)
     exit(1)
 
-def prepare_track(input, output, ss=0, t=-14, f=3):
+def prepare_track(input, output, ss=0, t=-14, f=3, length = 60):
+    """
+    Prepares a track by normalising, fading and more
+    ---------------------------------------------
+    input = The input file to prepare
+    output = The output file name
+    ss = the position to start the trim at
+    t = the target volume in LUFS (-70 to -5)
+    f = the number of seconds to fade
+    length = the length of the track to use
+    """
     print('Preparing', input + '...')
     
     # trim
     p1 = subprocess.Popen(['ffmpeg',
                            '-loglevel', 'error',
                            '-ss', str(ss),
-                           '-i', input, '-t', '60', '-f', 'wav', '-'],
+                           '-i', input, '-t', str(length), '-f', 'wav', '-'],
                           stdout=subprocess.PIPE)
     
     # normalize
@@ -47,7 +57,7 @@ def prepare_track(input, output, ss=0, t=-14, f=3):
                            '-loglevel', 'error',
                            '-i', '-', '-af',
                            'afade=t=in:ss=0:d=' + str(f) +
-                           ',afade=t=out:st=' + str(60 - f) + ':d=' + str(f),
+                           ',afade=t=out:st=' + str(length - f) + ':d=' + str(f),
                            '-f', 'wav', '-y', output],
                           stdin=subprocess.PIPE,
                           stdout=subprocess.PIPE)

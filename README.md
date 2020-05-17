@@ -42,6 +42,8 @@ For at kunne lave en klub 100, skal der udfyldes et sheet med hvilke sange man �
 
 Opbygningen af klub 100 foregår vha. 2 sheets, "Sange" og "Shoutouts". Templaten "sheet_template" kan anvendes.
 
+Det er vigtigt at kolonner har de samme navne, som angivet nedenunder.
+
 ## Sange
 Arket “Sange” indeholder de sange som Klub 100 skal bestå af. 
 

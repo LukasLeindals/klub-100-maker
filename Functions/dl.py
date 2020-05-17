@@ -34,9 +34,14 @@ def download(name, link, outfile):
         print('Error downloading', name, 'from', link, file=sys.stderr)
         print(err.decode('utf-8'), file=sys.stderr)
 
-if __name__ == '__main__':
-    
-    tracks_path = os.path.join(os.path.curdir, 'tracks')
+def download_all(dl_path = None, csv_name = "sange.csv"):
+    """
+    Downloades all links from the csv
+    ------------------------------------
+    csv_name = the csv to download from, the first column must be the name of the track and the second must be a link 
+    dl_path = the path in which to place the downloaded tracks
+    """
+    tracks_path = os.path.join(os.path.curdir, 'tracks') if dl_path is None else dl_path
     name_index = 0
     link_index = 1
     
@@ -46,7 +51,7 @@ if __name__ == '__main__':
     os.mkdir(tracks_path)
     
     with multiprocessing.Pool() as p:
-        with open('klub.csv', 'rt') as csvfile:
+        with open(csv_name, 'rt') as csvfile:
             reader = csv.reader(csvfile, delimiter=',', quotechar='"')
             
             for i, row in enumerate(reader, 1):
