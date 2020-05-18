@@ -36,7 +36,7 @@ def combine(club_name = "klub.csv", prep_shoutout_path = None, prep_tracks_path 
     fileformat = the fileformat to use for the club
     with_shoutout = whether or not to use shoutouts
     """
-    shoutouts = os.path.join(os.path.curdir, 'prepared_shoutouts') if (prep_shoutout_path is None & with_shoutouts) else prep_shoutout_path
+    shoutouts = os.path.join(os.path.curdir, 'prepared_shoutouts') if ((prep_shoutout_path is None) & (with_shoutouts)) else prep_shoutout_path
     tracks = os.path.join(os.path.curdir, 'prepared_tracks') if prep_tracks_path is None else prep_tracks_path
     output = os.path.join(os.path.curdir, 'klub.' + fileformat) if output_name is None else os.path.join(os.path.curdir, output_name+ fileformat)
     inputs = []
@@ -52,7 +52,8 @@ def combine(club_name = "klub.csv", prep_shoutout_path = None, prep_tracks_path 
             inputs.append('-i')
             inputs.append(os.path.join(tracks, str(i) + '.wav'))
 
-    filter_ = ''.join(('[' + str(a) + ':0]' for a in range(0, 2 * i))) + 'concat=n=' + str(2 * i) + ':v=0:a=1[out]'
+    n = 2*i if with_shoutouts else i
+    filter_ = ''.join(('[' + str(a) + ':0]' for a in range(0, n))) + 'concat=n=' + str(n) + ':v=0:a=1[out]'
 
     process = subprocess.Popen(['ffmpeg', *inputs, '-filter_complex', filter_, '-map', '[out]', output],
                             stdout=subprocess.PIPE)

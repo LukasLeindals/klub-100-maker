@@ -13,7 +13,7 @@ if len(err) != 0:
     print(err)
     exit(1)
 
-def prepare_all_tracks(club_name = "klub.csv", input = None, outout = None, t = -14, f = 3, length = 60):
+def prepare_all_tracks(club_name = "klub.csv", input = None, output = None, t = -14, f = 3, length = 60):
     """
     Prepares all tracks in a folder
     ---------------------------------------

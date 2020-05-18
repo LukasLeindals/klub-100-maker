@@ -49,7 +49,7 @@ Arket “Sange” indeholder de sange som Klub 100 skal bestå af.
 
 I feltet ”Sang - Kunstner” skal en title samt kunster angives i formatter “sang - kunstner”. 
 
-I feltet “link” angives et link til den ønskede sang, her skal angives et link til soundcloud eller youtube.
+I feltet “link” angives et link til den ønskede sang, her skal angives et link (sider der understøttet ses her: https://github.com/ytdl-org/youtube-dl/blob/master/docs/supportedsites.md).
 
 I feltet “starttidspunkt (i sek)” angives det antal sekunder inde i klippet at sangen skal startes, der vil herfra blive klippet 60 sekunder ud, som anvendes i Børne Klub 100.
 
@@ -62,11 +62,11 @@ Arket “Shoutouts” indeholder de citater, som placeres mellem sangene.
 
 I feltet “Shoutout titel” gives en titel som indikere hvad der siges/er essencen af shoutoutet. Dette vil blive shoutoutets reference og lydoptagelsen skal have dette navn for at blive matchet med den rette sang. Denne kolonne er den eneste nødvendige, hvis man selv indspiller shoutouts.
 
-I feltet “link” angives et link til det ønskede citat fra YouTube eller SoundCloud. Dette bruges, hvis man ikke selv indspiller citater, men derimod henter dem fra YT eller SC.
+I feltet “link” angives et link til det ønskede citat. Dette bruges, hvis man ikke selv indspiller citater, men derimod henter dem fra et understøttet site (https://github.com/ytdl-org/youtube-dl/blob/master/docs/supportedsites.md).
 
 I felterne “start tid (sek)” og “slut tid (sek)” angives start og sluttidspunktet i sekunder for det citat man ønsker. Disse tidspunkter referere til lyden i det angivne link.
 
-I feltet “downloadet” angives med et “x” om det er et citat der skal downloades uden om SoundCloud eller Youtube.
+I feltet “downloadet” angives med et “x” om det er et citat der skal downloades, da det ikke er fra et understøttet site (https://github.com/ytdl-org/youtube-dl/blob/master/docs/supportedsites.md).
 
 ## Stats
 I arket “Stats” findes forskellige optællinger og lignede over eksempelvis, hvor mange shoutouts der er fundet indtil videre.

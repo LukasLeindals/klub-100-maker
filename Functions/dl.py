@@ -8,9 +8,10 @@ import os
 
 import subprocess
 
+# if __name__ == "__main":
 err = subprocess.Popen(['pip', 'install', 'youtube-dl'],
-                       stdout=subprocess.DEVNULL,
-                       stderr=subprocess.PIPE).communicate()[1]
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.PIPE).communicate()[1]
 
 if len(err) != 0:
     print(err)

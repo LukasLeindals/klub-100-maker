@@ -1,9 +1,9 @@
 import pandas as pd
 
 
-def create_song_csv(xlsx_name, song_sheet = "Sange", csv_name = "Songs.csv"):
+def create_song_csv(xlsx_name, n_songs = 100, song_sheet = "Sange", csv_name = "Songs.csv"):
     songs = pd.read_excel(xlsx_name, sheet_name=song_sheet, usecols = ["Sang - Kunstner", "link", "starttidspunkt (i sek)", "Shoutout"])
-    songs.to_csv(csv_name)
+    songs.iloc[:n_songs, :].to_csv(csv_name, index = False, header = False)
 
     return songs
 
