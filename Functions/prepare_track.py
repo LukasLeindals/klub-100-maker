@@ -71,11 +71,11 @@ def prepare_track(input, output, ss=0, t=-14, f=3, length = 60):
     
     return p4.communicate(normalized)[0] # return stdout in case output is '-'
 
-def prepare_all_tracks(club_name = "klub.csv", input = None, output = None, t = -14, f = 3, length = 60):
+def prepare_all_tracks(n_songs = 100, input = None, output = None, t = -14, f = 3, length = 60):
     """
     Prepares all tracks in a folder
     ---------------------------------------
-    club_name = path to csv with track information, the third column must have the start time in second from which to trim
+    csv_name = path to csv with track information, the third column must have the start time in second from which to trim
     input = input folder with the tracks
     output = output folder to put the prepared tracks in
     t = Target volume in LUFS (-70 to -5)
@@ -103,18 +103,17 @@ def prepare_all_tracks(club_name = "klub.csv", input = None, output = None, t = 
         os.mkdir(output)
     
     with multiprocessing.Pool() as p:
-        with open(club_name, 'rt') as csvfile:
-            reader = csv.reader(csvfile, delimiter=',', quotechar='"')
+
             
-            for i, row in enumerate(reader, 1):
-                
-                infile = os.path.join(input, str(i) + '.wav')
-                outfile = os.path.join(output, str(i) + '.wav')
-                
-                if not os.path.exists(infile):
-                    continue
-                
-                p.apply_async(prepare_track, (infile, outfile, row[2], t, f, length))
+        for i in range(n_songs):
+            
+            infile = os.path.join(input, str(i) + '.wav')
+            outfile = os.path.join(output, str(i) + '.wav')
+            
+            if not os.path.exists(infile):
+                continue
+            
+            p.apply_async(prepare_track, (infile, outfile, row[2], t, f, length))
         
         p.close()
         p.join()
