@@ -22,13 +22,20 @@ def get_club_len(xlsx_name, song_sheet_name = "Sange"):
         songs = songs.iloc[:, 0].dropna()
         return songs.shape[0]
 
+def get_trim_vals(shoutouts_csv = "Shoutouts.csv"):
+    lens = pd.read_csv(shoutouts_csv, usecols=[2,3], header = None)
+    lens.columns = list(range(2))
+    return lens
 
-# print(create_song_csv("Examples/Børne Klub 100/Børne Klub 100.xlsx"))
 
-# s = pd.read_excel("Examples/Børne Klub 100/Børne Klub 100.xlsx", sheet_name="Sange", usecols = ["link", "sh"])
-# print(s.columns)
+if __name__ == "__main__":
+    # print(create_song_csv("Examples/Børne Klub 100/Børne Klub 100.xlsx"))
+
+    # s = pd.read_excel("Examples/Børne Klub 100/Børne Klub 100.xlsx", sheet_name="Sange", usecols = ["link", "sh"])
+    # print(s.columns)
 
 
-# create_shoutout_csv("Examples/Børne Klub 100/Børne Klub 100.xlsx", n_shoutouts=5, csv_name="SO.csv")
-create_song_csv("Examples/Børne Klub 100/Børne Klub 100.xlsx")
-print(get_club_len("Examples/Børne Klub 100/Børne Klub 100.xlsx"))
+    # create_shoutout_csv("Examples/Børne Klub 100/Børne Klub 100.xlsx", n_shoutouts=5, csv_name="SO.csv")
+    # create_song_csv("Examples/Børne Klub 100/Børne Klub 100.xlsx")
+    # print(get_club_len("Examples/Børne Klub 100/Børne Klub 100.xlsx"))
+    print(get_trim_vals("SO.csv"))

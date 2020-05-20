@@ -25,7 +25,7 @@ if len(err) != 0:
 # if not os.path.exists(args.shoutouts) or not os.path.exists(args.tracks):
 #     exit(1)
 
-def combine(n_songs = 100, prep_shoutout_path = None, prep_tracks_path = None, output_name = None, fileformat = "mp3", with_shoutouts = True):
+def combine(songs_csv = "klub.csv", prep_shoutout_path = None, prep_tracks_path = None, output_name = None, fileformat = "mp3", with_shoutouts = True):
     """
     Combines songs and shoutouts
     -----------------------------------
@@ -43,13 +43,15 @@ def combine(n_songs = 100, prep_shoutout_path = None, prep_tracks_path = None, o
 
 
         
-    for i in range(n_songs):
-        if with_shoutouts:
+    with open(songs_csv, 'rt') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',', quotechar='"')
+        
+        for i, row in enumerate(reader, 1):
             inputs.append('-i')
             inputs.append(os.path.join(shoutouts, str(i) + '.wav'))
-        
-        inputs.append('-i')
-        inputs.append(os.path.join(tracks, str(i) + '.wav'))
+            
+            inputs.append('-i')
+            inputs.append(os.path.join(tracks, str(i) + '.wav'))
 
     n = 2*i if with_shoutouts else i
     filter_ = ''.join(('[' + str(a) + ':0]' for a in range(0, n))) + 'concat=n=' + str(n) + ':v=0:a=1[out]'

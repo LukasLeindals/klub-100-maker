@@ -35,14 +35,14 @@ def download(name, link, outfile):
         print('Error downloading', name, 'from', link, file=sys.stderr)
         print(err.decode('utf-8'), file=sys.stderr)
 
-def download_all(dl_path = None, csv_name = "sange.csv"):
+def download_all(dl_path = None, csv_name = "sange.csv", sound_type = "tracks"):
     """
     Downloades all links from the csv
     ------------------------------------
     csv_name = the csv to download from, the first column must be the name of the track and the second must be a link 
     dl_path = the path in which to place the downloaded tracks
     """
-    tracks_path = os.path.join(os.path.curdir, 'tracks') if dl_path is None else dl_path
+    tracks_path = os.path.join(os.path.curdir, sound_type) if dl_path is None else dl_path
     name_index = 0
     link_index = 1
     

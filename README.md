@@ -53,7 +53,7 @@ I feltet “link” angives et link til den ønskede sang, her skal angives et l
 
 I feltet “starttidspunkt (i sek)” angives det antal sekunder inde i klippet at sangen skal startes, der vil herfra blive klippet 60 sekunder ud, som anvendes i Børne Klub 100.
 
-Ønsker man at en sang skal have et bestemt shoutout inden sangen afspilles, skrives shoutsoutets titel i feltet “Shoutout”. Titlen skal matche titlen i arket “Shoutouts”
+Ønsker man at en sang skal have et bestemt shoutout inden sangen afspilles, skrives shoutsoutets titel i feltet “Shoutout”. Titlen skal matche navnet på lydfilen. Hvis der shoutout sheetet bruges til at downlaode shoutouts, vil dette svarer til titlen i shoutout sheetet
 
 Det er muligt selv at tilføje flere kolonner med ting, som fx en kommentar. Disse vil blive ignoreret i bygningen af klub 100.
 
@@ -80,15 +80,20 @@ I feltet “Idé” angives med fritekst hvad ideen er.
 
 
 
-# Byg mig en klub 100, tak
+<!-- # Byg mig en klub 100, tak
 
 * Placér klub.csv i samme mappe som scriptsne
 * Kør dl.py for at downloade alle sange til ./tracks/
 * Kør prepare_all_tracks.py for at trimme, fade, og loudness normalisere alle sange. Resultatet placeres i ./prepared_tracks/
 * Kør prepare_all_shoutouts.py for at loudness normalisere alle skud ud, som ryger i ./prepared_shoutouts
-* Kør combine.py for at kombinere sange og skud ud til en endelig klub.mp3.
+* Kør combine.py for at kombinere sange og skud ud til en endelig klub.mp3. -->
 
 # Kræver:
  * `python3`
  * `youtube-dl` - for at køre dl.py
  * `ffmpeg` - for at køre prepare_track.py, prepare_shoutout.py og combine.py
+
+
+# TO-DO
+
+- [ ] Giv shoutout navn efter placering i song csv
