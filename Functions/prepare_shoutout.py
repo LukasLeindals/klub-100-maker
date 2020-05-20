@@ -43,27 +43,18 @@ def prepare_shoutout(input, output, t=-14, trim = False, ss = 0, length = 5):
                             '-f', 'wav', '-y', os.devnull],  # generate log but no other output
                             stdin=subprocess.PIPE,
                             stdout=subprocess.PIPE)
-        
+
+
         # loudnorm pass 2
         p3 = subprocess.Popen(['ffmpeg',
                             '-loglevel', 'error',
                             '-i', '-',
                             '-pass', '2', '-af', 'loudnorm=I=' + str(t) + ':TP=-1',
-                            '-f', 'wav', '-'
+                            '-f', 'wav', '-y', output
                             ],
                             stdin=subprocess.PIPE,
                             stdout=subprocess.PIPE)
         
-        # fade
-        f=0
-        p4 = subprocess.Popen(['ffmpeg',
-                            '-loglevel', 'error',
-                            '-i', '-', '-af',
-                            'afade=t=in:ss=0:d=' + str(f) +
-                            ',afade=t=out:st=' + str(ss+length) + ':d=' + str(f),
-                            '-f', 'wav', '-y', output],
-                            stdin=subprocess.PIPE,
-                            stdout=subprocess.PIPE)
 
     else:
         # two-pass ebu r128 loudnorm filter
@@ -87,7 +78,6 @@ def prepare_shoutout(input, output, t=-14, trim = False, ss = 0, length = 5):
         trimmed = p1.communicate()[0]
         p2.communicate(trimmed)
         normalized = p3.communicate(trimmed)[0]
-        p4.communicate(normalized)[0]
 
     else:
         p1.communicate()
