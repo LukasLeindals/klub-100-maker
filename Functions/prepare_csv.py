@@ -17,10 +17,10 @@ def create_shoutout_csv(xlsx_name, n_shoutouts = 100, shoutout_sheet = "Shoutout
     shoutouts["SO length"] = shoutouts["SO length"].fillna(max_length)
     shoutouts.iloc[:n_shoutouts, [0, 1, 2, 4]].to_csv(csv_name, index = False, header = False)
 
-def get_club_len(xlsx_name, song_sheet_name = "Sange"):
-        songs = pd.read_excel(xlsx_name, song_sheet_name)
-        songs = songs.iloc[:, 0].dropna()
-        return songs.shape[0]
+# def get_club_len(xlsx_name, song_sheet_name = "Sange"):
+#         songs = pd.read_excel(xlsx_name, song_sheet_name)
+#         songs = songs.iloc[:, 0].dropna()
+#         return songs.shape[0]
 
 def get_trim_vals(shoutouts_csv = "Shoutouts.csv"):
     lens = pd.read_csv(shoutouts_csv, usecols=[2,3], header = None)

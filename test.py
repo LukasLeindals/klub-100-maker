@@ -14,5 +14,5 @@ if __name__ == "__main__":
     # download_all(csv_name="Songs.csv")
     # prepare_all_tracks(n_songs = 5, input = None, output = None, t = -14, f = 3, length = 60)
     #combine(club_name = "Songs.csv", prep_shoutout_path = None, prep_tracks_path = None, output_name = None, fileformat = "mp3", with_shoutouts = False)
-    # download("bamse", "https://www.dr.dk/drtv/se/bamses-billedbog_-laver-baal_129427", "bamse.wav")
-    prepare_shoutout(input = "shoutouts/3.wav", output = "test.wav", trim = True, ss = 39, length = 10)
+    download("bamse", "https://www.youtube.com/watch?v=qGC7KyIv1P4", "bamse.wav")
+    prepare_shoutout(input = "bamse.wav", output = "test.wav", trim = False, ss = 0, length = 60)

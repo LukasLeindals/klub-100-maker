@@ -32,56 +32,33 @@ def prepare_shoutout(input, output, t=-14, trim = False, ss = 0, length = 5):
                             '-ss', str(ss),
                             '-i', input, '-t', str(length), '-f', 'wav', '-'],
                             stdout=subprocess.PIPE)
+        input = '-'
         
-        # normalize
-        # two-pass ebu r128 loudnorm filter
-        # loudnorm pass 1
-        p2 = subprocess.Popen(['ffmpeg',
-                            '-loglevel', 'error',
-                            '-i', '-',
-                            '-pass', '1', '-af', 'loudnorm=I=' + str(t) + ':TP=-1',
-                            '-f', 'wav', '-y', os.devnull],  # generate log but no other output
-                            stdin=subprocess.PIPE,
-                            stdout=subprocess.PIPE)
-
-
-        # loudnorm pass 2
-        p3 = subprocess.Popen(['ffmpeg',
-                            '-loglevel', 'error',
-                            '-i', '-',
-                            '-pass', '2', '-af', 'loudnorm=I=' + str(t) + ':TP=-1',
-                            '-f', 'wav', '-y', output
-                            ],
-                            stdin=subprocess.PIPE,
-                            stdout=subprocess.PIPE)
-        
-
-    else:
-        # two-pass ebu r128 loudnorm filter
-        # loudnorm pass 1
-        p1 = subprocess.Popen(['ffmpeg', '-loglevel', 'error',
-                            '-i', input,
-                            '-pass', '1', '-af', 'loudnorm=I=' + str(t) + ':TP=-1',
-                            '-f', 'wav', '-y', os.devnull],  # generate log in null
-                            stdin=subprocess.PIPE,
-                            stdout=subprocess.PIPE)
-        
-        # loudnorm pass 2
-        p2 = subprocess.Popen(['ffmpeg', '-loglevel', 'error',
-                            '-i', input,
-                            '-pass', '2', '-af', 'loudnorm=I=' + str(t) + ':TP=-1',
-                            '-f', 'wav', '-y', output],
-                            stdin=subprocess.PIPE,
-                            stdout=subprocess.PIPE)
+    # two-pass ebu r128 loudnorm filter
+    # loudnorm pass 1
+    p2 = subprocess.Popen(['ffmpeg', '-loglevel', 'error',
+                        '-i', input,
+                        '-pass', '1', '-af', 'loudnorm=I=' + str(t) + ':TP=-1',
+                        '-f', 'wav', '-y', os.devnull],  # generate log in null
+                        stdin=subprocess.PIPE,
+                        stdout=subprocess.PIPE)
+    
+    # loudnorm pass 2
+    p3 = subprocess.Popen(['ffmpeg', '-loglevel', 'error',
+                        '-i', input,
+                        '-pass', '2', '-af', 'loudnorm=I=' + str(t) + ':TP=-1',
+                        '-f', 'wav', '-y', output],
+                        stdin=subprocess.PIPE,
+                        stdout=subprocess.PIPE)
 
     if trim:
         trimmed = p1.communicate()[0]
         p2.communicate(trimmed)
-        normalized = p3.communicate(trimmed)[0]
+        p3.communicate(trimmed)[0]
 
     else:
-        p1.communicate()
         p2.communicate()
+        p3.communicate()
 
 def prepare_all_shoutouts(songs_csv = "klub.csv", input = None, output = None, t = -14, trim_vals = None): 
     """

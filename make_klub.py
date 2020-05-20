@@ -18,7 +18,7 @@ if __name__ == "__main__":
     # download_all(csv_name=club_folder+"Shoutouts.csv", sound_type="shoutouts")
 
     # prepare_all_tracks(songs_csv=club_folder+"Songs.csv", input = None, output = None, t = -14, f = 3, length = 60)
-    # trim_vals = get_trim_vals(shoutouts_csv=club_folder+"Shoutouts.csv")
-    # prepare_all_shoutouts(songs_csv=club_folder+"Songs.csv", input = None, output = None, t = -14, trim_vals = trim_vals)
+    trim_vals = get_trim_vals(shoutouts_csv=club_folder+"Shoutouts.csv")
+    prepare_all_shoutouts(songs_csv=club_folder+"Songs.csv", input = None, output = None, t = -14, trim_vals = trim_vals)
 
     combine(songs_csv= club_folder+"Songs.csv", prep_shoutout_path = None, prep_tracks_path = None, output_name = None, fileformat = "mp3", with_shoutouts = True)
