@@ -25,20 +25,20 @@ if len(err) != 0:
 # if not os.path.exists(args.shoutouts) or not os.path.exists(args.tracks):
 #     exit(1)
 
-def combine(songs_csv = "klub.csv", prep_shoutout_path = None, prep_tracks_path = None, output_name = None, fileformat = "mp3", with_shoutouts = True):
+def combine(songs_csv = "klub.csv", prep_shoutout_path = "prepared_shoutouts", prep_tracks_path = "prepared_tracks", output_name = "klub", file_format = "mp3", with_shoutouts = True):
     """
     Combines songs and shoutouts
     -----------------------------------
-    club_name = the name of the club csv file
-    prep_shoutout_path = path for the folder with the prepared shoutouts
-    prep_tracks_path = path for the folder with the prepared tracks
-    output_name = navnet på den lyd fil der skal laves med klub 100
-    fileformat = the fileformat to use for the club
+    club_name = the name of the club csv file \n
+    prep_shoutout_path = path for the folder with the prepared shoutouts \n
+    prep_tracks_path = path for the folder with the prepared tracks \n
+    output_name = navnet på den lyd fil der skal laves med klub 100 \n
+    fileformat = the fileformat to use for the club \n
     with_shoutout = whether or not to use shoutouts
     """
-    shoutouts = os.path.join(os.path.curdir, 'prepared_shoutouts') if ((prep_shoutout_path is None) & (with_shoutouts)) else prep_shoutout_path
-    tracks = os.path.join(os.path.curdir, 'prepared_tracks') if prep_tracks_path is None else prep_tracks_path
-    output = os.path.join(os.path.curdir, 'klub.' + fileformat) if output_name is None else os.path.join(os.path.curdir, output_name+ fileformat)
+    shoutouts = prep_shoutout_path #os.path.join(os.path.curdir, 'prepared_shoutouts') if ((prep_shoutout_path is None) & (with_shoutouts)) else prep_shoutout_path
+    tracks = prep_tracks_path #os.path.join(os.path.curdir, 'prepared_tracks') if prep_tracks_path is None else prep_tracks_path
+    output = output_name + "."+ file_format #os.path.join(os.path.curdir, output_name + "." + fileformat)
     inputs = []
 
 
@@ -47,8 +47,9 @@ def combine(songs_csv = "klub.csv", prep_shoutout_path = None, prep_tracks_path 
         reader = csv.reader(csvfile, delimiter=',', quotechar='"')
         
         for i, row in enumerate(reader, 1):
-            inputs.append('-i')
-            inputs.append(os.path.join(shoutouts, str(i) + '.wav'))
+            if with_shoutouts:
+                inputs.append('-i')
+                inputs.append(os.path.join(shoutouts, str(i) + '.wav'))
             
             inputs.append('-i')
             inputs.append(os.path.join(tracks, str(i) + '.wav'))

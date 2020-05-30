@@ -17,11 +17,11 @@ def prepare_shoutout(input, output, t=-14, trim = False, ss = 0, length = 5):
     """
     Prepares a shoutout by normalising and more
     ---------------------------------------------
-    input = The input file to prepare
-    output = The output file name
-    t = the target volume in LUFS (-70 to -5)
-    trim = whether or not to trim the shoutout
-    ss = the position to start the trim at
+    input = The input file to prepare \n
+    output = The output file name \n
+    t = the target volume in LUFS (-70 to -5) \n
+    trim = whether or not to trim the shoutout \n
+    ss = the position to start the trim at \n
     length = the length of the shoutout
     """
     print('Preparing', input + '...')
@@ -60,19 +60,19 @@ def prepare_shoutout(input, output, t=-14, trim = False, ss = 0, length = 5):
         p2.communicate()
         p3.communicate()
 
-def prepare_all_shoutouts(songs_csv = "klub.csv", input = None, output = None, t = -14, trim_vals = None): 
+def prepare_all_shoutouts(songs_csv, input = "shoutouts", output = "prepared_shoutouts", t = -14, trim_vals = None): 
     """
     Prepares all shoutouts
     -------------------------
-    n_shoutouts = the number of shoutouts in the club 100
-    input = input folder with shoutouts
-    output = name of output folder
-    t = Target volume in LUFS (-70 to -5)
+    songs_csv = csv with the songs (used to find number of songs) \n
+    input = input folder with shoutouts \n
+    output = name of output folder \n
+    t = Target volume in LUFS (-70 to -5) \n
     trim_vals = data frame with start time of SO as first column and length as second
     """
 
-    input = os.path.join(os.path.curdir, 'shoutouts') if input is None else input
-    output = os.path.join(os.path.curdir, 'prepared_shoutouts') if output is None else output
+    # input = os.path.join(os.path.curdir, 'shoutouts') if input is None else input
+    # output = os.path.join(os.path.curdir, 'prepared_shoutouts') if output is None else output
     
     if not os.path.exists(input):
         exit(1)

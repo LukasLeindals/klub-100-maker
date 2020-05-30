@@ -71,7 +71,7 @@ def prepare_track(input, output, ss=0, t=-14, f=3, length = 60):
     
     return p4.communicate(normalized)[0] # return stdout in case output is '-'
 
-def prepare_all_tracks(songs_csv = "klub.csv", input = None, output = None, t = -14, f = 3, length = 60):
+def prepare_all_tracks(songs_csv = "klub.csv", input = "tracks", output = "prepared_tracks", t = -14, f = 3, length = 60):
     """
     Prepares all tracks in a folder
     ---------------------------------------
@@ -84,8 +84,8 @@ def prepare_all_tracks(songs_csv = "klub.csv", input = None, output = None, t = 
     
     ss_index = 2
 
-    input = os.path.join(os.path.curdir, 'tracks') if input is None else input
-    output = os.path.join(os.path.curdir, 'prepared_tracks') if output is None else output
+    # input = os.path.join(os.path.curdir, 'tracks') if input is None else input
+    # output = os.path.join(os.path.curdir, 'prepared_tracks') if output is None else output
 
     
     if not os.path.exists(input):
