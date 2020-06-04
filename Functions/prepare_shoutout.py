@@ -93,7 +93,10 @@ def prepare_all_shoutouts(songs_csv, input = "shoutouts", output = "prepared_sho
                 if not os.path.exists(infile):
                     continue
                 
-                p.apply_async(prepare_shoutout, (infile, outfile, t, trim, trim_vals.iloc[i-1,0], trim_vals.iloc[i-1,1]))
+                if trim:
+                    p.apply_async(prepare_shoutout, (infile, outfile, t, trim, trim_vals.iloc[i-1,0], trim_vals.iloc[i-1,1]))
+                else:
+                    p.apply_async(prepare_shoutout, (infile, outfile, t, trim))
         
         p.close()
         p.join()

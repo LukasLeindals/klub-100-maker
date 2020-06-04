@@ -36,12 +36,15 @@ def combine(songs_csv = "klub.csv", prep_shoutout_path = "prepared_shoutouts", p
     fileformat = the fileformat to use for the club \n
     with_shoutout = whether or not to use shoutouts
     """
+
+    print("Putting the elements together...")
+
     shoutouts = prep_shoutout_path #os.path.join(os.path.curdir, 'prepared_shoutouts') if ((prep_shoutout_path is None) & (with_shoutouts)) else prep_shoutout_path
     tracks = prep_tracks_path #os.path.join(os.path.curdir, 'prepared_tracks') if prep_tracks_path is None else prep_tracks_path
     output = output_name + "."+ file_format #os.path.join(os.path.curdir, output_name + "." + fileformat)
     inputs = []
 
-
+    
         
     with open(songs_csv, 'rt') as csvfile:
         reader = csv.reader(csvfile, delimiter=',', quotechar='"')
