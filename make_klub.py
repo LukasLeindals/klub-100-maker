@@ -5,7 +5,7 @@ import shutil
 def check_progress(path, check_desc):
     r = True
     if os.path.exists(path):
-        inp = input(f"A {check_desc} already exists in this directory, do you want to overwrite? [y/n] \n")
+        inp = input(f"A {check_desc} already exists at {path} do you want to overwrite? [y/n] \n")
         if inp.lower() == "n":
             r = False
         elif inp.lower() != "y":
@@ -15,20 +15,20 @@ def check_progress(path, check_desc):
 
 
 def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shoutout_type = "none", song_vol = -14, so_vol = -14, 
-                fade = 3, song_length = 60, file_format = "mp3", files_to_keep = []):
+                fade = 3, song_length = 60, file_format = "mp3", files_to_keep = None):
     """
     Makes a club 100
     -------------------------------------------------------------
     club_folder = the folder in which the club xlsx is placed \n
     club_file = either an xlsx file with the "Sange" and "Shoutout" sheets or csv with the songs. Can also pass a list of csv's, where the first element is the name of the csv for the songs and the second is csv with shoutouts \n
     n_songs = the length of the club 100 \n
-    shoutout_type: a string defining the type of shoutout, choices are "none", "link" and "own" \n
+    shoutout_type = a string defining the type of shoutout, choices are "none", "link" and "own" \n
     song_vol = the song volume in LUFS (-70 to -5) \n
     so_vol = the shoutout volume in LUFS (-70 to -5) \n
     fade = the number of seconds to fade each song \n
     song_length = length of each song \n
     file_format = the file format of the output file \n
-    files_to_keep = the folders to keep as a list of strings. Options are "song_folder", "prep_song_folder", "shoutout_folder", "prep_shoutout_folder", "song_csv", "shoutout_csv", "all"
+    files_to_keep = the folders to keep as a list of strings. Options are "song_folder", "prep_song_folder", "shoutout_folder", "prep_shoutout_folder", "song_csv", "shoutout_csv", "all", None
     """
     
     # initialisation
@@ -40,13 +40,18 @@ def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shout
     prep_song_folder = club_folder + "/prepared_songs"
     prep_shoutout_folder = club_folder + "/prepared_shoutouts"
 
+    if files_to_keep is None:
+        files_to_keep = []
+
 
     # Assertions - make sure everything is good to go
     if (shoutout_type == "own") & (not os.path.exists(shoutout_folder)):
         raise AssertionError(f"To use own shoutouts, please place them in a folder called 'shoutouts' in your wanted club folder: {club_folder}")
     # if not all(elem in folder_names for elem in files_to_keep):
     #     raise AssertionError("Please make sure you specified the file/folder to keep correctly")
-
+    if not os.path.exists(club_folder+"/"+club_file):
+        raise AssertionError(f"Something is wrong with the club folder/file as {club_folder}/{club_file}")
+        
     # Check whether some process has already been done to speed up
     dl_songs = check_progress(song_folder, "song folder")
     dl_so = False if shoutout_type in ["own", "none"] else check_progress(shoutout_folder, "shoutout folder")
@@ -60,11 +65,12 @@ def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shout
     if dl_songs:
         from Functions.prepare_csv import create_song_csv
     if dl_so:
-        from Functions.prepare_csv import create_shoutout_csv, get_trim_vals
+        from Functions.prepare_csv import create_shoutout_csv
     if prep_songs:
         from Functions.prepare_track import prepare_all_tracks
     if prep_so:
         from Functions.prepare_shoutout import prepare_all_shoutouts
+        from Functions.prepare_csv import get_trim_vals
 
     # prepare csv's and download
     if dl_songs:
@@ -117,23 +123,15 @@ def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shout
             if os.path.isdir(fpath):
                 shutil.rmtree(fpath)
 
-    print(f"Your club is ready and placed at {club_folder+"/"+club_file}, enjoy!")
+    print(f"Your club is ready and placed at {club_folder}/{club_file}, enjoy!")
 
     
 if __name__ == "__main__":
     # club_folder = "Examples/Børne Klub 100/"
     # club = club_folder+"test_kid2.xlsx"
-    n = 3
-    make_club(club_folder = "Examples/Test", club_file = "test_kid2.xlsx", n_songs = 3, shoutout_type="link", output_name = "test", file_format = "mp3", files_to_keep="all")
+    make_club(club_folder = "Examples/Kasper_klub", club_file = "kasper_klub.xlsx", n_songs = 100, shoutout_type="none", output_name = "Fader Fadøls klub 100", file_format = "mp3", files_to_keep=None, so_vol=-5)
 
 
 
     # make_club(club_folder, club, n_songs = n, output_name = "test_KID2", shoutout_type = "link")
     # combine(songs_csv= club_folder+"Songs.csv", prep_shoutout_path = None, prep_tracks_path = None, output_name = "test_KID2", fileformat = "mp3", with_shoutouts = True)
-
-   
-    
-
-    
-
-    
