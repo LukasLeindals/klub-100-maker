@@ -1,5 +1,6 @@
 import os
 import shutil
+import pandas as pd
 
 
 def check_progress(path, check_desc):
@@ -26,7 +27,7 @@ def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shout
     song_vol = the song volume in LUFS (-70 to -5) \n
     so_vol = the shoutout volume in LUFS (-70 to -5) \n
     fade = the number of seconds to fade each song \n
-    song_length = length of each song \n
+    song_length = length of each song, kan be set to "varying" if song_csv contains the column "sluttidspunkt (i sek)" \n
     file_format = the file format of the output file \n
     files_to_keep = the folders to keep as a list of strings. Options are "song_folder", "prep_song_folder", "shoutout_folder", "prep_shoutout_folder", "song_csv", "shoutout_csv", "all", None
     """
@@ -42,6 +43,8 @@ def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shout
 
     if files_to_keep is None:
         files_to_keep = []
+
+    diff_song_length = True if song_length == "varying" else False
 
 
     # Assertions - make sure everything is good to go
@@ -76,12 +79,12 @@ def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shout
     if dl_songs:
         filename, file_extension = os.path.splitext(club_file)
         if type(club_file) == list:
-            create_song_csv(file_name = club_folder+"/"+club_file[0], csv_name= song_csv, n_songs = n_songs)
+            create_song_csv(file_name = club_folder+"/"+club_file[0], csv_name= song_csv, n_songs = n_songs, diff_song_length = diff_song_length)
             if (len(club_file) == 2) & (dl_so):
                 create_shoutout_csv(file_name=club_folder+"/"+club_file[1], csv_name= shoutout_csv, n_shoutouts = n_songs)
                 download_all(dl_path = shoutout_folder, csv_name=shoutout_csv)
         else:
-            create_song_csv(file_name = club_folder+"/"+club_file, csv_name = song_csv, n_songs=n_songs)
+            create_song_csv(file_name = club_folder+"/"+club_file, csv_name = song_csv, n_songs=n_songs, diff_song_length = diff_song_length)
 
         ## Download songs
         download_all(dl_path=song_folder, csv_name=song_csv)
@@ -93,6 +96,8 @@ def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shout
 
     # prepare tracks
     if prep_songs:
+        if diff_song_length:
+            song_length = get_trim_vals(song_csv)
         prepare_all_tracks(songs_csv=song_csv, input = song_folder, output = prep_song_folder, t = song_vol, f = fade, length = song_length)
 
     # prepare shoutouts
@@ -102,7 +107,7 @@ def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shout
             files_to_keep.append("shoutout_folder")
         
         if with_shoutouts:
-            trim_vals = get_trim_vals(shoutouts_csv=shoutout_csv) if shoutout_type == "link" else None
+            trim_vals = get_trim_vals(csv=shoutout_csv) if shoutout_type == "link" else None
             prepare_all_shoutouts(songs_csv=song_csv, input = shoutout_folder, output = prep_shoutout_folder, t = so_vol, trim_vals = trim_vals)
 
 
@@ -123,13 +128,14 @@ def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shout
             if os.path.isdir(fpath):
                 shutil.rmtree(fpath)
 
-    print(f"Your club is ready and placed at {club_folder}/{club_file}, enjoy!")
+    print(f"Your club is ready and placed at {club_folder}/{output_name}.{format}, enjoy!")
 
     
 if __name__ == "__main__":
     # club_folder = "Examples/Børne Klub 100/"
     # club = club_folder+"test_kid2.xlsx"
-    make_club(club_folder = "Examples/Kasper_klub", club_file = "kasper_klub.xlsx", n_songs = 100, shoutout_type="none", output_name = "Fader Fadøls klub 100", file_format = "mp3", files_to_keep=None, so_vol=-5)
+    make_club(club_folder = "Examples/Børne Klub 100", club_file = "test_kid2.xlsx", n_songs = 4, shoutout_type="none", output_name = "test", file_format = "mp3", files_to_keep="all", so_vol=-5,
+    song_length="varying")
 
 
 

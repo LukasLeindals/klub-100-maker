@@ -4,6 +4,7 @@ import os
 import subprocess
 import multiprocessing
 import csv
+import pandas as pd
 
 err = subprocess.Popen(['pip', 'install', 'ffmpeg'], 
                        stdout=subprocess.DEVNULL, 
@@ -75,11 +76,12 @@ def prepare_all_tracks(songs_csv = "klub.csv", input = "tracks", output = "prepa
     """
     Prepares all tracks in a folder
     ---------------------------------------
-    csv_name = path to csv with track information, the third column must have the start time in second from which to trim
+    song_csv = path to csv with track information, the third column must have the start time in second from which to trim
     input = input folder with the tracks
     output = output folder to put the prepared tracks in
     t = Target volume in LUFS (-70 to -5)
     f = fade duration in seconds
+    length = length of song, if specified as a pd data frame with start time as first column and length as second, this will be used 
     """
     
     ss_index = 2
@@ -106,7 +108,10 @@ def prepare_all_tracks(songs_csv = "klub.csv", input = "tracks", output = "prepa
                 if not os.path.exists(infile):
                     continue
                 
-                p.apply_async(prepare_track, (infile, outfile, row[2], t, f))
+                if isinstance(length, pd.DataFrame):
+                    p.apply_async(prepare_track, (infile, outfile, length.iloc[i-1,0], t, f, length.iloc[i-1,1]))
+                else:
+                    p.apply_async(prepare_track, (infile, outfile, row[2], t, f, length))
         
         p.close()
         p.join()
