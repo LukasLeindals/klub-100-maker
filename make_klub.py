@@ -85,8 +85,6 @@ def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shout
         else:
             create_song_csv(file_name = club_folder+"/"+club_file, csv_name = song_csv, n_songs=n_songs, diff_song_length = diff_song_length)
 
-        mix_pos(song_csv, diff_song_length)
-
 
     if (shoutout_type == "link") & (type(club_file) != list) & dl_so:
             create_shoutout_csv(club_folder+"/"+club_file, n_shoutouts=n_songs, shoutout_sheet="Shoutouts", csv_name = shoutout_csv)
@@ -136,14 +134,14 @@ def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shout
             if os.path.isdir(fpath):
                 shutil.rmtree(fpath)
 
-    print(f"Your club is ready and placed at {club_folder}/{output_name}.{format}, enjoy!")
+    print(f"Your club is ready and placed at {club_folder}/{output_name}.{file_format}, enjoy!")
 
     
 if __name__ == "__main__":
     # club_folder = "Examples/Børne Klub 100/"
     # club = club_folder+"test_kid2.xlsx"
-    make_club(club_folder = "Examples/Børne Klub 100", club_file = "test_kid2.xlsx", n_songs = 4, shoutout_type="none", output_name = "test", file_format = "mp3", files_to_keep="all", so_vol=-5,
-    song_length="varying")
+    make_club(club_folder = "Examples/Børne Klub 100", club_file = "test_kid2.xlsx", n_songs = 4, shoutout_type="link", output_name = "test", file_format = "mp3", files_to_keep="all", so_vol=-5,
+    song_length=60)
 
 
 

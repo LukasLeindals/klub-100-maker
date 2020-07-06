@@ -4,7 +4,7 @@ import numpy as np
 
 
 
-def create_song_csv(file_name, n_songs = 100, song_sheet = "Sange", csv_name = "Songs.csv", diff_song_length = False):
+def create_song_csv(file_name, n_songs = 100, song_sheet = "Sange", csv_name = "Songs.csv", diff_song_length = False, shuffle = True):
     """
     Creates a csv in the right format to use for the make_klub function. File must either be xlsx or csv and have the headers "Sang - Kunstner", "link", "starttidspunkt (i sek)", "Shoutout"
     -------------------------------------------
@@ -13,6 +13,7 @@ def create_song_csv(file_name, n_songs = 100, song_sheet = "Sange", csv_name = "
     song_sheet = if the file is an .xslx file, the name of the sheet containing the songs must be given here \n
     csv_name = name of the output csv, must have the .csv extension \n
     diff_song_length = whether the songs have varying/different lengths, must have the column "sluttidspunkt (i sek)" to do so \n
+    shuffle = whether or not to shuffle the songs, not marked with an x in "behold placering" \n
     """
     print("Creating the song csv...")
 
@@ -38,6 +39,9 @@ def create_song_csv(file_name, n_songs = 100, song_sheet = "Sange", csv_name = "
         songs = songs.loc[:, ["Sang - Kunstner", "link", "starttidspunkt (i sek)", "Song length", "Shoutout", "behold placering"]]
 
     songs.iloc[:n_songs, :].to_csv(csv_name, index = False, header = False)
+
+    if shuffle:
+        mix_song_pos(csv_name, diff_song_length)
 
 
 def create_shoutout_csv(file_name, n_shoutouts = 100, shoutout_sheet = "Shoutouts", csv_name = "Shoutouts.csv", max_length = 45):
@@ -82,14 +86,14 @@ def get_trim_vals(csv = "Shoutouts.csv"):
     lens.columns = list(range(2))
     return lens
 
-def mix_pos(csv = "Songs.csv", diff_song_length = False):
+def mix_song_pos(song_csv = "Songs.csv", diff_song_length = False):
     """
     Mixes up the order of the songs or shoutouts
     ---------------------------------------
     csv: a csv in the format of create_song_csv/shoutout_csv, where a character in the column "behold placering", keeps the song in its original position \n
     diff_song_length: whether the song_csv contains the column "sluttidspunkt (i sek)" or not
     """
-    df = pd.read_csv(csv, usecols = [5]) if diff_song_length else pd.read_csv(csv, usecols = [4], header = None, squeeze = True)
+    df = pd.read_csv(song_csv, usecols = [5]) if diff_song_length else pd.read_csv(song_csv, usecols = [4], header = None, squeeze = True)
     l = len(df)
     mix_loc = list(*np.where(pd.isnull(df)))
     keep_loc = [i for i in range(l) if i not in mix_loc]
@@ -102,20 +106,31 @@ def mix_pos(csv = "Songs.csv", diff_song_length = False):
             order.append(perm_mix[0])
             perm_mix = np.delete(perm_mix, 0)
     
-    pd.read_csv(csv, header = None).reindex(order).to_csv(csv, index = False, header = False)
+    pd.read_csv(song_csv, header = None).reindex(order).to_csv(song_csv, index = False, header = False)
 
 
-# def arrange_shoutout_csv(song_csv = "Songs.csv", shoutout_csv = "Shoutouts.csv", diff_song_length = False):
-#     """
-#     Arranges the shoutout csv due to the placement in the song csv
-#     """
-#     song_so = pd.read_csv(song_csv, usecols = [4]) if diff_song_length else pd.read_csv(song_csv, usecols = [3], header = None, squeeze = True)
-#     shoutout_so = pd.read_csv(shoutout_csv, usecols = [0], header = None, squeeze = True)
+def arrange_shoutout_csv(song_csv = "Songs.csv", shoutout_csv = "Shoutouts.csv", diff_song_length = False):
+    """
+    Arranges the shoutout csv due to the placement in the song csv
+    """
+    song_so = pd.read_csv(song_csv, usecols = [4]) if diff_song_length else pd.read_csv(song_csv, usecols = [3], header = None, squeeze = True).values
+    shoutout_so = pd.read_csv(shoutout_csv, usecols = [0], header = None, squeeze = True).values
 
-#     print(song_so in shoutout)
+    missing_so = [t for t in song_so if (t is not np.nan) & (t not in shoutout_so)]
+    if len(missing_so) is not 0:
+        print(f"These shoutouts does not exist in the shoutout csv/sheet: {missing_so}! Please insert the same name in the song sheet as given in the shoutout sheet if the shoutout should follow a specific song.")
 
+    order = []
+    perm_mix = np.random.permutation([i for i in range(len(song_so)) if shoutout_so[i] not in song_so])
 
-#     print(song_so, shoutout_so)
+    for i in range(len(song_so)):
+        if song_so[i] in shoutout_so:
+            order.append(*list(*np.where(shoutout_so == song_so[i])))
+        else:
+            order.append(perm_mix[0])
+            perm_mix = np.delete(perm_mix, 0)
+
+    pd.read_csv(shoutout_csv, header = None).reindex(order).to_csv("test.csv", index = False, header = False)
 
 
 if __name__ == "__main__":
@@ -132,6 +147,6 @@ if __name__ == "__main__":
     # create_song_csv("template.xlsx", csv_name="test_songs.csv", diff_song_length=False, n_songs=14)
     # create_shoutout_csv("template.xlsx", csv_name="test_so.csv", n_shoutouts=14) 
     # print(get_trim_vals("test_songs.csv"))
-    mix_song_pos("test_songs.csv", diff_song_length = False)
-    # arrange_shoutout_csv(song_csv = "test_songs.csv", shoutout_csv="test_so.csv")
+    # mix_song_pos("test_songs.csv", diff_song_length = False)
+    arrange_shoutout_csv(song_csv = "test_songs.csv", shoutout_csv="test_so.csv")
     # arrange_shoutout_csv(song_csv = "test_songs2.csv", shoutout_csv="test_so2.csv")
