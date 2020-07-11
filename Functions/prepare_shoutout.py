@@ -101,3 +101,5 @@ def prepare_all_shoutouts(songs_csv, input = "shoutouts", output = "prepared_sho
         p.close()
         p.join()
 
+def rename_shoutouts(shoutout_folder = "shoutouts", song_csv = "Songs.csv", diff_song_length = False):
+    song_so = pd.read_csv(song_csv, usecols = [4]) if diff_song_length else pd.read_csv(song_csv, usecols = [3], header = None, squeeze = True).values

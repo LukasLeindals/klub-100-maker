@@ -66,3 +66,7 @@ def download_all(dl_path = "tracks", csv_name = "sange.csv"):#, sound_type = "tr
         
         p.close()
         p.join()
+
+
+if __name__ == "__main__":
+    download("tøf", "https://www.facebook.com/drramasjang/videos/3012276192219529/", "tøf.wav")
