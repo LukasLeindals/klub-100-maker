@@ -1,5 +1,5 @@
 #Own Addition
-klub-env/
+*klub-env/*
 
 # Slutprodukter
 Examples/4^4/klub 4^4.mp3
@@ -139,3 +139,4 @@ dmypy.json
 *.m4a
 *.m4a
 
+Examples/Børne Klub 100/~$test_kid2.xlsx
