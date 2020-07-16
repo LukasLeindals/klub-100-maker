@@ -1,6 +1,7 @@
 import os
 import shutil
 import pandas as pd
+import time
 
 
 def check_progress(path, check_desc):
@@ -33,6 +34,7 @@ def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shout
     """
     
     # initialisation
+    t0 = time.time()
     print("Beginning to make the Club 100...")
     song_csv = club_folder+"/Songs.csv"
     shoutout_csv = club_folder+"/Shoutouts.csv"
@@ -127,8 +129,9 @@ def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shout
                 os.remove(fpath)
             if os.path.isdir(fpath):
                 shutil.rmtree(fpath)
-
-    print(f"Your club is ready and placed at {club_folder}/{output_name}.{format}, enjoy!")
+    
+    print(f"Club was made in {int(time.time()-t0)} seconds")
+    print(f"Your club is ready and placed at {club_folder}/{output_name}.{file_format}, enjoy!")
 
     
 if __name__ == "__main__":

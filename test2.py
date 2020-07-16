@@ -2,6 +2,8 @@
 # from Functions.dl import download_all
 import os
 import shutil
+import numpy as np
+import pandas as pd
 
 # def test(p=[]):
 #     hej = "hej"
