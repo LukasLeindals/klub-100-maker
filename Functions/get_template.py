@@ -10,7 +10,7 @@ def get_template(name = "template", format = "xlsx", extra_song_cols = ["komment
     extra_shoutout_cols: list of columns to add to the Sange sheet, choose from ["kommentar"] \n
     sheet_types: the csv/xlsx sheets to include, choose from ["Sange", "Shoutouts"]
     """
-    song_cols = ["Sang - Kunstner", "link", "starttidspunkt (i sek)", "Shoutout", "behold placering"]
+    song_cols = ["Sang - Kunstner", "link", "starttidspunkt (i sek)", "Shoutout"]
     shoutout_cols = ["Shoutout titel", "link", "starttidspunkt (i sek)", "sluttidspunkt (i sek)"] 
 
     songs = pd.read_excel("sheet_template.xlsx", sheet_name= "Sange", usecols = song_cols)
