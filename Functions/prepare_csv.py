@@ -127,21 +127,18 @@ def arrange_shoutout_csv(song_csv = "Songs.csv", shoutout_csv = "Shoutouts.csv",
 
     pd.read_csv(shoutout_csv, header = None).reindex(order).to_csv(shoutout_csv, index = False, header = False)
 
+def name_own_shoutouts(song_csv = "Songs.csv", org_shoutout_folder = "Shoutouts", new_shoutout_folder = "Shoutouts_numbered"):
+    pass
+
 
 if __name__ == "__main__":
-    # print(create_song_csv("Examples/Børne Klub 100/Børne Klub 100.xlsx"))
+    # create_song_csv("Examples/Børne Klub 100/Børne Klub 100.xlsx", csv_name="Songs.csv", diff_song_length=False, n_songs=14)
+    # create_shoutout_csv("Examples/Børne Klub 100/Børne Klub 100.xlsx", csv_name="Shoutouts.csv", n_shoutouts=14) 
+    # # print(get_trim_vals("test_songs.csv"))
+    # mix_song_pos("Songs.csv", diff_song_length = False)
+    # arrange_shoutout_csv(song_csv = "Songs.csv", shoutout_csv="Shoutouts.csv")
+    # # arrange_shoutout_csv(song_csv = "test_songs2.csv", shoutout_csv="test_so2.csv")
 
-    # s = pd.read_excel("Examples/Børne Klub 100/Børne Klub 100.xlsx", sheet_name="Sange", usecols = ["link", "sh"])
-    # print(s.columns)
 
-
-    # create_shoutout_csv("Examples/Børne Klub 100/Børne Klub 100.xlsx", n_shoutouts=5, csv_name="SO.csv")
-    # create_song_csv("Examples/Børne Klub 100/Børne Klub 100.xlsx")
-    # print(get_club_len("Examples/Børne Klub 100/Børne Klub 100.xlsx"))
-   
-    create_song_csv("Examples/Børne Klub 100/Børne Klub 100.xlsx", csv_name="Songs.csv", diff_song_length=False, n_songs=14)
-    create_shoutout_csv("Examples/Børne Klub 100/Børne Klub 100.xlsx", csv_name="Shoutouts.csv", n_shoutouts=14) 
-    # print(get_trim_vals("test_songs.csv"))
-    mix_song_pos("Songs.csv", diff_song_length = False)
-    arrange_shoutout_csv(song_csv = "Songs.csv", shoutout_csv="Shoutouts.csv")
-    # arrange_shoutout_csv(song_csv = "test_songs2.csv", shoutout_csv="test_so2.csv")
+    create_song_csv("test/template.xlsx", n_songs = 8, csv_name="test/Songs.csv")
+    mix_song_pos(song_csv="test/Songs.csv")

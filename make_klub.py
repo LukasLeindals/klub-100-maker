@@ -17,7 +17,7 @@ def check_progress(path, check_desc):
 
 
 def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shoutout_type = "none", song_vol = -14, so_vol = -14, 
-                fade = 3, song_length = 60, file_format = "mp3", files_to_keep = None):
+                fade = 3, song_length = 60, file_format = "mp3", files_to_keep = None, so_folder = "shoutouts"):
     """
     Makes a club 100
     -------------------------------------------------------------
@@ -30,7 +30,8 @@ def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shout
     fade = the number of seconds to fade each song \n
     song_length = length of each song, kan be set to "varying" if song_csv contains the column "sluttidspunkt (i sek)" \n
     file_format = the file format of the output file \n
-    files_to_keep = the folders to keep as a list of strings. Options are "song_folder", "prep_song_folder", "shoutout_folder", "prep_shoutout_folder", "song_csv", "shoutout_csv", "all", None
+    files_to_keep = the folders to keep as a list of strings. Options are "song_folder", "prep_song_folder", "shoutout_folder", "prep_shoutout_folder", "song_csv", "shoutout_csv", "all", None \n
+    so_folder = name of the folder with the shoutouts inside the club folder, only necesary if "own" shoutouts is used. \n
     """
     
     # initialisation
@@ -39,7 +40,7 @@ def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shout
     song_csv = club_folder+"/Songs.csv"
     shoutout_csv = club_folder+"/Shoutouts.csv"
     song_folder = club_folder+"/songs"
-    shoutout_folder = club_folder + "/shoutouts"
+    shoutout_folder = club_folder + "/" + so_folder
     prep_song_folder = club_folder + "/prepared_songs"
     prep_shoutout_folder = club_folder + "/prepared_shoutouts"
 
@@ -113,6 +114,8 @@ def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shout
     if prep_so:
         if shoutout_type == "own":
             files_to_keep.append("shoutout_folder")
+            from prepare_csv import name_own_shoutouts
+            name_own_shoutouts(song_csv = song_csv, org_shoutout_folder = shoutout_folder, new_shoutout_folder = club_folder+ "/shoutouts_numbered")
         
         if with_shoutouts:
             trim_vals = get_trim_vals(csv=shoutout_csv) if shoutout_type == "link" else None
