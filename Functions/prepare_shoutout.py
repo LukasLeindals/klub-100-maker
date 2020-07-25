@@ -101,3 +101,14 @@ def prepare_all_shoutouts(songs_csv, input = "shoutouts", output = "prepared_sho
         p.close()
         p.join()
 
+if __name__ == "__main__":
+    from prepare_csv import create_shoutout_csv, create_song_csv
+    from dl import download_all
+    from prepare_shoutout import prepare_all_shoutouts
+    from prepare_csv import get_trim_vals
+
+    # create_shoutout_csv("so.xlsx")
+    # create_song_csv("so.xlsx", csv_name = "song_test.csv")
+    # download_all(dl_path="sos", csv_name="Shoutouts.csv")
+    trim_vals = get_trim_vals()
+    prepare_all_shoutouts(input = "sos", output = "sos_prep", trim_vals = trim_vals, songs_csv = "song_test.csv")

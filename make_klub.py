@@ -68,7 +68,7 @@ def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shout
     if dl_songs or dl_so:
         from Functions.dl import download_all
     if dl_songs:
-        from Functions.prepare_csv import create_song_csv
+        from Functions.prepare_csv import create_song_csv, mix_song_pos
     if dl_so:
         from Functions.prepare_csv import create_shoutout_csv
     if prep_songs:
@@ -82,19 +82,25 @@ def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shout
         filename, file_extension = os.path.splitext(club_file)
         if type(club_file) == list:
             create_song_csv(file_name = club_folder+"/"+club_file[0], csv_name= song_csv, n_songs = n_songs, diff_song_length = diff_song_length)
+            mix_song_pos(song_csv = song_csv, diff_song_length = diff_song_length)
             if (len(club_file) == 2) & (dl_so):
                 create_shoutout_csv(file_name=club_folder+"/"+club_file[1], csv_name= shoutout_csv, n_shoutouts = n_songs)
+                from Functions.prepare_csv import arrange_shoutout_csv
+                arrange_shoutout_csv(song_csv=song_csv, shoutout_csv=shoutout_csv, diff_song_length=diff_song_length)
                 download_all(dl_path = shoutout_folder, csv_name=shoutout_csv)
         else:
             create_song_csv(file_name = club_folder+"/"+club_file, csv_name = song_csv, n_songs=n_songs, diff_song_length = diff_song_length)
 
         ## Download songs
+        mix_song_pos(song_csv = song_csv, diff_song_length = diff_song_length)
         download_all(dl_path=song_folder, csv_name=song_csv)
 
 
     if (shoutout_type == "link") & (type(club_file) != list) & dl_so:
-            create_shoutout_csv(club_folder+"/"+club_file, n_shoutouts=n_songs, shoutout_sheet="Shoutouts", csv_name = shoutout_csv)
-            download_all(dl_path = shoutout_folder, csv_name=shoutout_csv)
+        create_shoutout_csv(club_folder+"/"+club_file, n_shoutouts=n_songs, shoutout_sheet="Shoutouts", csv_name = shoutout_csv)
+        from Functions.prepare_csv import arrange_shoutout_csv
+        arrange_shoutout_csv(song_csv=song_csv, shoutout_csv=shoutout_csv, diff_song_length=diff_song_length)
+        download_all(dl_path = shoutout_folder, csv_name=shoutout_csv)
 
     # prepare tracks
     if prep_songs:
@@ -137,8 +143,8 @@ def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shout
 if __name__ == "__main__":
     # club_folder = "Examples/Børne Klub 100/"
     # club = club_folder+"test_kid2.xlsx"
-    make_club(club_folder = "Examples/Børne Klub 100", club_file = "test_kid2.xlsx", n_songs = 4, shoutout_type="none", output_name = "test", file_format = "mp3", files_to_keep="all", so_vol=-5,
-    song_length="varying")
+    make_club(club_folder = "Examples/Børne Klub 100", club_file = "Børne Klub 100.xlsx", n_songs = 100, shoutout_type="link", output_name = "klubKID", file_format = "mp3", files_to_keep="all", so_vol=-5,
+    song_length=60, song_vol=-20)
 
 
 

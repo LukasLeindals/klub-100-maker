@@ -35,7 +35,7 @@ def download(name, link, outfile):
         print('Error downloading', name, 'from', link, file=sys.stderr)
         print(err.decode('utf-8'), file=sys.stderr)
 
-def download_all(dl_path = "tracks", csv_name = "sange.csv"):#, sound_type = "tracks"):
+def download_all(dl_path = "tracks", csv_name = "Songs.csv"):#, sound_type = "tracks"):
     """
     Downloades all links from the csv
     ------------------------------------
@@ -66,3 +66,7 @@ def download_all(dl_path = "tracks", csv_name = "sange.csv"):#, sound_type = "tr
         
         p.close()
         p.join()
+
+
+if __name__ == "__main__":
+    download("test", "https://www.youtube.com/watch?v=E0Hk3LHbA7Y", "test.wav")

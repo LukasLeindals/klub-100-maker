@@ -25,7 +25,7 @@ def create_song_csv(file_name, n_songs = 100, song_sheet = "Sange", csv_name = "
         raise AssertionError("Please use a valid file extension (xlsx or csv)")
 
     # create the csv 
-    cols = ["Sang - Kunstner", "link", "starttidspunkt (i sek)", "sluttidspunkt (i sek)", "Shoutout"] if diff_song_length else ["Sang - Kunstner", "link", "starttidspunkt (i sek)", "Shoutout"]
+    cols = ["Sang - Kunstner", "link", "starttidspunkt (i sek)", "sluttidspunkt (i sek)", "Shoutout", "behold placering"] if diff_song_length else ["Sang - Kunstner", "link", "starttidspunkt (i sek)", "Shoutout", "behold placering"]
 
     if file_extension == ".xlsx":
         songs = pd.read_excel(file_name, sheet_name=song_sheet, usecols = cols).dropna(how = "all")
@@ -139,9 +139,9 @@ if __name__ == "__main__":
     # create_song_csv("Examples/Børne Klub 100/Børne Klub 100.xlsx")
     # print(get_club_len("Examples/Børne Klub 100/Børne Klub 100.xlsx"))
    
-    create_song_csv("Examples/Børne Klub 100/test_kid2.xlsx", csv_name="test_songs.csv", diff_song_length=False, n_songs=14)
-    create_shoutout_csv("Examples/Børne Klub 100/test_kid2.xlsx", csv_name="test_so.csv", n_shoutouts=14) 
+    create_song_csv("Examples/Børne Klub 100/Børne Klub 100.xlsx", csv_name="Songs.csv", diff_song_length=False, n_songs=14)
+    create_shoutout_csv("Examples/Børne Klub 100/Børne Klub 100.xlsx", csv_name="Shoutouts.csv", n_shoutouts=14) 
     # print(get_trim_vals("test_songs.csv"))
-    # mix_song_pos("test_songs.csv", diff_song_length = False)
-    arrange_shoutout_csv(song_csv = "test_songs.csv", shoutout_csv="test_so.csv")
+    mix_song_pos("Songs.csv", diff_song_length = False)
+    arrange_shoutout_csv(song_csv = "Songs.csv", shoutout_csv="Shoutouts.csv")
     # arrange_shoutout_csv(song_csv = "test_songs2.csv", shoutout_csv="test_so2.csv")
