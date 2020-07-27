@@ -69,4 +69,4 @@ def download_all(dl_path = "tracks", csv_name = "Songs.csv"):#, sound_type = "tr
 
 
 if __name__ == "__main__":
-    download("test", "https://www.youtube.com/watch?v=E0Hk3LHbA7Y", "test.wav")
+    download("sol over gudhjem", "https://soundcloud.com/heyshortymashups2/shorty-rockstar?in=heyshortymashups/sets/hey-shorty-mashups", "shorty.wav")

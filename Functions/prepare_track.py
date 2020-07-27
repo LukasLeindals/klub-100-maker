@@ -115,3 +115,7 @@ def prepare_all_tracks(songs_csv = "klub.csv", input = "tracks", output = "prepa
         
         p.close()
         p.join()
+
+
+if __name__ == "__main__":
+    prepare_track("Examples/Klintebongz/songs/53.wav", "Examples/Klintebongz/prepared_songs/53.wav", ss = 3)
