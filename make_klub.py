@@ -115,7 +115,7 @@ def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shout
         if shoutout_type == "own":
             files_to_keep.append("shoutout_folder")
             from prepare_csv import name_own_shoutouts
-            name_own_shoutouts(song_csv = song_csv, org_shoutout_folder = shoutout_folder, new_shoutout_folder = club_folder+ "/shoutouts_numbered", diff_song_length = diff_song_length)
+            name_own_shoutouts(song_csv = song_csv, org_shoutout_folder = shoutout_folder, new_shoutout_folder = club_folder+ "/shoutouts_numbered", diff_song_length = diff_song_length, conversion_csv = club_folder+"/shoutout_to_number.csv")
             prepare_all_shoutouts(songs_csv=song_csv, input = club_folder+ "/shoutouts_numbered", output = prep_shoutout_folder, t = so_vol, trim_vals = None)
         
         if shoutout_type == "link":
@@ -141,7 +141,7 @@ def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shout
                 shutil.rmtree(fpath)
     
     print(f"Club was made in {int(time.time()-t0)} seconds")
-    print(f"Your club is ready and placed at {club_folder}/{output_name}.{file_format}, enjoy!")
+    print(f"Your club is ready and saved as {club_folder}/{output_name}.{file_format}, enjoy!")
 
     
 if __name__ == "__main__":
@@ -151,7 +151,7 @@ if __name__ == "__main__":
     # song_length=60, song_vol=-20)
 
     # make_club(club_folder = "Examples/Klintebongz", club_file="klub klintebongz - Sange.csv", n_songs=100, shoutout_type="none", files_to_keep="all", output_name="Klub Klintebongz")
-    make_club(club_folder="Examples/Shorty", club_file="Klub shorty - Sheet1.csv", n_songs=100, files_to_keep="all", output_name="Klub shorty")
+    make_club(club_folder="test", club_file="template.xlsx", n_songs=8, files_to_keep="all", output_name="Klub test")
 
     # make_club(club_folder, club, n_songs = n, output_name = "test_KID2", shoutout_type = "link")
     # combine(songs_csv= club_folder+"Songs.csv", prep_shoutout_path = None, prep_tracks_path = None, output_name = "test_KID2", fileformat = "mp3", with_shoutouts = True)

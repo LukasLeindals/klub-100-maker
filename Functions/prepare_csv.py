@@ -134,63 +134,70 @@ def rename_sound(infile, outfile):
                        stdout=subprocess.DEVNULL, 
                        stderr=subprocess.PIPE).communicate()[1]
 
-    p1 = subprocess.Popen(['ffmpeg',
-                           '-loglevel', 'error',
-                           '-i', infile, '-f', 'm4a', '-'],
-                          stdout=subprocess.PIPE)
-    p2 = subprocess.Popen(['ffmpeg',
-                           '-loglevel', 'error',
-                           '-f', 'wav', '-y', outfile],
-                          stdin=subprocess.PIPE,
-                          stdout=subprocess.PIPE)
-    
-    p = p1.communicate()[0]
-    
-    return p2.communicate(p1)[0]
+    return subprocess.Popen(['ffmpeg', '-i', infile, outfile]).communicate()
 
-def name_own_shoutouts(song_csv = "Songs.csv", org_shoutout_folder = "shoutouts", new_shoutout_folder = "shoutouts_numbered", diff_song_length = False):
+def name_own_shoutouts(song_csv = "Songs.csv", org_shoutout_folder = "shoutouts", new_shoutout_folder = "shoutouts_numbered", diff_song_length = False, conversion_csv = "shoutout_to_number.csv"):
     """
     Renames all the recorded shoutouts to give them the correct order
     """
+    import multiprocessing
+
     song_so = pd.read_csv(song_csv, usecols = [4]) if diff_song_length else pd.read_csv(song_csv, usecols = [3], header = None, squeeze = True).values
     
     if not os.path.exists(new_shoutout_folder):
         os.mkdir(new_shoutout_folder)
-    
-    files = [os.path.splitext(f)[0] for f in os.listdir(org_shoutout_folder)]
+    else:
+        overwrite = input(f"The new_shout_folder: {new_shoutout_folder} already exists, would you like to overwrite this? [y/n] \n").lower()
+        while overwrite not in ["y", "n"]:
+            overwrite = input(f"The new_shout_folder: {new_shoutout_folder} already exists, would you like to overwrite this? [y/n] \n").lower()
+        
+        if overwrite is "n":
+            org_len = len(os.listdir(org_shoutout_folder))
+            new_len = len(os.listdir(new_shoutout_folder))
 
-    missing_so = [t for t in song_so if (t is not np.nan) & (t not in files)]
+            if org_len is not new_len:
+                raise ValueError(f"The number of orignal shoutouts ({org_len}) does not match the number of new shoutouts ({new_len}), please make sure all shoutouts have been numbered, by e.g. chossing to overwrite the existing folder for the new shoutouts.")
+        
+        else:
+            shutil.rmtree(new_shoutout_folder)
+            os.mkdir(new_shoutout_folder)
+
+    sos = [os.path.splitext(f)[0] for f in os.listdir(org_shoutout_folder)]
+
+    missing_so = [t for t in song_so if (t is not np.nan) & (t not in sos)]
     if len(missing_so) is not 0:
         print(f"These shoutouts does not exist in the shoutout folder: {missing_so}! Please insert the same name in the song sheet as given in the shoutout folder if the shoutout should follow a specific song.")
 
     
-    perm_mix = np.random.permutation([i for i in range(len(song_so)) if song_so[i] not in files])
+    perm_mix = np.random.permutation([i for i in range(len(song_so)) if song_so[i] not in sos])
     order = {}
     song_so_num = [i for i, f in enumerate(song_so) if f is not np.nan]
 
+    files = os.listdir(org_shoutout_folder)
     for i in range(len(files)):
-        if files[i] in song_so:
-            order[files[i]] = song_so_num[0]+1
+        if sos[i] in song_so:
+            order[files[i]] = str(song_so_num[0]+1)+".wav"
             song_so_num = np.delete(song_so_num, 0)
         else:
-            print(perm_mix)
-            order[files[i]] = perm_mix[0]+1
+            order[files[i]] = str(perm_mix[0]+1)+".wav"
             perm_mix = np.delete(perm_mix, 0)
-    
-    
+
     with multiprocessing.Pool() as p:
-        for i, f  in enumerate(os.listdir(org_shoutout_folder)):
-            filename, file_extension = os.path.splitext(f)
-            infile = os.path.join(input, str(i) + '.wav')
-            outfile = os.path.join(output, str(i) + '.wav')
-            
-            if not os.path.exists(f):
-                continue
-            
-            if isinstance(length, pd.DataFrame):
-                p.apply_async(prepare_track, (infile, outfile, length.iloc[i-1,0], t, f, length.iloc[i-1,1]))
-            else:
-                p.apply_async(prepare_track, (infile, outfile, row[2], t, f, length))
+        for key, value in order.items():
+            infile = org_shoutout_folder+"/"+key
+            outfile = new_shoutout_folder+"/"+value
+
+            print(infile, outfile)
+
+            p.apply_async(rename_sound, (infile, outfile))
+
+        p.close()
+        p.join()
+
+    pd.DataFrame.from_dict(order, orient = "index").to_csv(conversion_csv, index = True, header = False)
+
+    print(f"The own shoutouts have now been renamed to fit the club 100 format and can be found in {new_shoutout_folder}. Furthermore, a csv showing the new naming can be found as {conversion_csv}")
+    
 
 
 if __name__ == "__main__":
@@ -204,5 +211,5 @@ if __name__ == "__main__":
 
     # create_song_csv("test/template.xlsx", n_songs = 8, csv_name="test/Songs.csv")
     # mix_song_pos(song_csv="test/Songs.csv")
-    # name_own_shoutouts(song_csv = "test/Songs.csv", org_shoutout_folder = "test/shoutouts", new_shoutout_folder = "test/shoutouts_numbered")
-    rename_sound("test/shoutouts/Badeland.m4a", "test/shoutouts_numbered/1.wav")
+    name_own_shoutouts(song_csv = "test/Songs.csv", org_shoutout_folder = "test/shoutouts", new_shoutout_folder = "test/shoutouts_numbered", conversion_csv="test/so_to_num.csv")
+    # rename_sound("test/shoutouts/bada bing.m4a", "test/shoutouts_numbered/3.wav")
