@@ -108,6 +108,10 @@ def mix_song_pos(song_csv = "Songs.csv", diff_song_length = False):
 def arrange_shoutout_csv(song_csv = "Songs.csv", shoutout_csv = "Shoutouts.csv", diff_song_length = False):
     """
     Arranges the shoutout csv due to the placement in the song csv
+    --------------------------------------------------------------
+    song_csv: name of the csv containing the song titles \n
+    shoutout_csv: name of the csv containing the shoutout names and links \n
+    diff_song_length: true or false whether the songs should have varying lengths
     """
     song_so = pd.read_csv(song_csv, usecols = [4]) if diff_song_length else pd.read_csv(song_csv, usecols = [3], header = None, squeeze = True).values
     shoutout_so = pd.read_csv(shoutout_csv, usecols = [0], header = None, squeeze = True).values
@@ -129,6 +133,12 @@ def arrange_shoutout_csv(song_csv = "Songs.csv", shoutout_csv = "Shoutouts.csv",
     pd.read_csv(shoutout_csv, header = None).reindex(order).to_csv(shoutout_csv, index = False, header = False)
 
 def rename_sound(infile, outfile):
+    """
+    Changes name and fileformat of sound file
+    -------------------------------------------
+    infile: the input file \n
+    outfile: the output file
+    """
     import subprocess
     err = subprocess.Popen(['pip', 'install', 'ffmpeg'], 
                        stdout=subprocess.DEVNULL, 
@@ -139,6 +149,12 @@ def rename_sound(infile, outfile):
 def name_own_shoutouts(song_csv = "Songs.csv", org_shoutout_folder = "shoutouts", new_shoutout_folder = "shoutouts_numbered", diff_song_length = False, conversion_csv = "shoutout_to_number.csv"):
     """
     Renames all the recorded shoutouts to give them the correct order
+    ------------------------------------------------------------------
+    song_csv: name of the csv with the song titles and links \n
+    org_shoutout_folder: name of the folder with the shoutouts to be renamed \n
+    new_shoutout_folder: name of the folder to place the renamed shoutouts in \n
+    diff_song_length: whether the songs have varying length (bool) \n
+    conversion_csv: name to give the csv with an overview of the original shoutout names and the numbered names
     """
     import multiprocessing
 
