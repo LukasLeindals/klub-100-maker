@@ -151,7 +151,7 @@ if __name__ == "__main__":
     # song_length=60, song_vol=-20)
 
     # make_club(club_folder = "Examples/Klintebongz", club_file="klub klintebongz - Sange.csv", n_songs=100, shoutout_type="none", files_to_keep="all", output_name="Klub Klintebongz")
-    make_club(club_folder="test", club_file="template.xlsx", n_songs=8, files_to_keep="all", output_name="Klub test")
+    make_club(club_folder="Examples/Klintebongz", club_file="klub klintebongz.xlsx", n_songs=100, files_to_keep="all", output_name="Klub Klintebongz", shoutout_type="own")
 
     # make_club(club_folder, club, n_songs = n, output_name = "test_KID2", shoutout_type = "link")
     # combine(songs_csv= club_folder+"Songs.csv", prep_shoutout_path = None, prep_tracks_path = None, output_name = "test_KID2", fileformat = "mp3", with_shoutouts = True)
