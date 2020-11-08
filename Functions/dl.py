@@ -69,4 +69,4 @@ def download_all(dl_path = "tracks", csv_name = "Songs.csv"):#, sound_type = "tr
 
 
 if __name__ == "__main__":
-    download("tessa ok", "https://www.youtube.com/watch?v=hxZkXdJ4kmg", "tessa.wav")
+    download("tessa ok", "https://www.youtube.com/watch?v=UK6rZzzjl9c", "Examples/Bad Bitch/songs/18.wav")

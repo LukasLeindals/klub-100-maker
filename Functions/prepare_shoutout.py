@@ -110,5 +110,7 @@ if __name__ == "__main__":
     # create_shoutout_csv("so.xlsx")
     # create_song_csv("so.xlsx", csv_name = "song_test.csv")
     # download_all(dl_path="sos", csv_name="Shoutouts.csv")
-    trim_vals = get_trim_vals()
-    prepare_all_shoutouts(input = "sos", output = "sos_prep", trim_vals = trim_vals, songs_csv = "song_test.csv")
+    # trim_vals = get_trim_vals()
+    # prepare_all_shoutouts(input = "sos", output = "sos_prep", trim_vals = trim_vals, songs_csv = "song_test.csv")
+
+    prepare_shoutout("file:D:/Git/GitHub/klub-100-maker/Functions/3.mp3", "3.wav")

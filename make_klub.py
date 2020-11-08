@@ -46,6 +46,8 @@ def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shout
 
     if files_to_keep is None:
         files_to_keep = []
+    if files_to_keep == ["all"]:
+        files_to_keep = "all"
 
     diff_song_length = True if song_length == "varying" else False
 
@@ -113,8 +115,9 @@ def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shout
     with_shoutouts = True if (shoutout_type == "link" or shoutout_type == "own") else False
     if prep_so:
         if shoutout_type == "own":
-            files_to_keep.append("shoutout_folder")
-            from prepare_csv import name_own_shoutouts
+            if files_to_keep is not "all":
+                files_to_keep.append("shoutout_folder")
+            from Functions.prepare_csv import name_own_shoutouts
             name_own_shoutouts(song_csv = song_csv, org_shoutout_folder = shoutout_folder, new_shoutout_folder = club_folder+ "/shoutouts_numbered", diff_song_length = diff_song_length, conversion_csv = club_folder+"/shoutout_to_number.csv")
             prepare_all_shoutouts(songs_csv=song_csv, input = club_folder+ "/shoutouts_numbered", output = prep_shoutout_folder, t = so_vol, trim_vals = None)
         
@@ -147,11 +150,12 @@ def make_club(club_folder, club_file, n_songs = 100, output_name = "klub", shout
 if __name__ == "__main__":
     # club_folder = "Examples/Børne Klub 100/"
     # # club = club_folder+"test_kid2.xlsx"
-    # make_club(club_folder = "Examples/Børne Klub 100", club_file = "Børne Klub 100.xlsx", n_songs = 100, shoutout_type="link", output_name = "klubKID", file_format = "mp3", files_to_keep="all", so_vol=-5,
-    # song_length=60, song_vol=-20)
+    # make_club(club_folder = "Examples/Børne Klub 100", club_file = "Børne Klub 100.xlsx", n_songs = 100, shoutout_type="link", output_name = "klubKID", file_format = "mp3", files_to_keep="all", so_vol=-10,
+    # song_length=60, song_vol=-14)
 
     # make_club(club_folder = "Examples/Klintebongz", club_file="klub klintebongz - Sange.csv", n_songs=100, shoutout_type="none", files_to_keep="all", output_name="Klub Klintebongz")
-    make_club(club_folder="Examples/Klintebongz", club_file="klub klintebongz.xlsx", n_songs=100, files_to_keep="all", output_name="Klub Klintebongz", shoutout_type="own")
+    # make_club(club_folder="Examples/Klintebongz", club_file="klub klintebongz.xlsx", n_songs=100, files_to_keep="all", output_name="Klub Klintebongz", shoutout_type="own")
+    make_club(club_folder="Examples/Bad Bitch", club_file="klub100.xlsx", n_songs=100, files_to_keep="all", output_name="Klub Bund lige", shoutout_type="own")
 
     # make_club(club_folder, club, n_songs = n, output_name = "test_KID2", shoutout_type = "link")
     # combine(songs_csv= club_folder+"Songs.csv", prep_shoutout_path = None, prep_tracks_path = None, output_name = "test_KID2", fileformat = "mp3", with_shoutouts = True)

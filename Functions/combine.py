@@ -63,3 +63,7 @@ def combine(songs_csv = "klub.csv", prep_shoutout_path = "prepared_shoutouts", p
     process = subprocess.Popen(['ffmpeg', *inputs, '-filter_complex', filter_, '-map', '[out]', output],
                             stdout=subprocess.PIPE)
     process.communicate()
+
+
+if __name__ == "__main__":
+    combine("Examples/Bad Bitch/Songs.csv", "Examples/Bad Bitch/shoutouts_numbered", "Examples/Bad Bitch/prepared_songs", output_name="Examples/Bad Bitch/Klub Bund lige")

@@ -14,5 +14,9 @@ if __name__ == "__main__":
     # download_all(csv_name="Songs.csv")
     # prepare_all_tracks(n_songs = 5, input = None, output = None, t = -14, f = 3, length = 60)
     #combine(club_name = "Songs.csv", prep_shoutout_path = None, prep_tracks_path = None, output_name = None, fileformat = "mp3", with_shoutouts = False)
-    download("bamse", "https://www.youtube.com/watch?v=4Z5f25b48ng", "bamse.wav")
-    prepare_shoutout(input = "bamse.wav", output = "test.wav", trim = True, ss = 154, length = 5)
+    # download("bamse", "https://www.youtube.com/watch?v=4Z5f25b48ng", "bamse.wav")
+    # prepare_shoutout(input = "bamse.wav", output = "test.wav", trim = True, ss = 154, length = 5)
+    # import os
+    # print(os.listdir("Examples/Bad Bitch/shoutouts"))
+    # import pandas as pd
+    # song_so = pd.read_csv("Examples/Bad Bitch/shoutouts", usecols = [3], header = None, squeeze = True).values

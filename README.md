@@ -96,4 +96,10 @@ I feltet “Idé” angives med fritekst hvad ideen er.
 
 # TO-DO
 
-- [ ] Giv shoutout navn efter placering i song csv
+- [ ] MP3 til wav funktion
+- [ ] fiks når fil ikke kan downloades
+- [ ] check at der er det rigtige antal shoutouts og sange
+- [ ] beskriv anvendelse
+- [ ] tilføj GUI
+- [ ] smid op på hjemmeside
+- [ ] overvej hvis mappen med egne shoutouts har for mange shoutouts

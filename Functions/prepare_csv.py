@@ -144,6 +144,10 @@ def rename_sound(infile, outfile):
                        stdout=subprocess.DEVNULL, 
                        stderr=subprocess.PIPE).communicate()[1]
 
+    if len(err) != 0:
+        print(err)
+        exit(1)
+
     return subprocess.Popen(['ffmpeg', '-i', infile, outfile]).communicate()
 
 def name_own_shoutouts(song_csv = "Songs.csv", org_shoutout_folder = "shoutouts", new_shoutout_folder = "shoutouts_numbered", diff_song_length = False, conversion_csv = "shoutout_to_number.csv"):
@@ -158,8 +162,6 @@ def name_own_shoutouts(song_csv = "Songs.csv", org_shoutout_folder = "shoutouts"
     """
     import multiprocessing
 
-    song_so = pd.read_csv(song_csv, usecols = [4]) if diff_song_length else pd.read_csv(song_csv, usecols = [3], header = None, squeeze = True).values
-    
     if not os.path.exists(new_shoutout_folder):
         os.mkdir(new_shoutout_folder)
     else:
@@ -178,37 +180,45 @@ def name_own_shoutouts(song_csv = "Songs.csv", org_shoutout_folder = "shoutouts"
             shutil.rmtree(new_shoutout_folder)
             os.mkdir(new_shoutout_folder)
 
+    song_so = pd.read_csv(song_csv, usecols = [4]) if diff_song_length else pd.read_csv(song_csv, usecols = [3], header = None, squeeze = True).values
     sos = [os.path.splitext(f)[0] for f in os.listdir(org_shoutout_folder)]
+    form = [os.path.splitext(f)[1] for f in os.listdir(org_shoutout_folder)]
+    # print(song_so)
+    # wav_names = [i+1 for i in range(len(sos))]
 
     missing_so = [t for t in song_so if (t is not np.nan) & (t not in sos)]
     if len(missing_so) is not 0:
-        print(f"These shoutouts does not exist in the shoutout folder: {missing_so}! Please insert the same name in the song sheet as given in the shoutout folder if the shoutout should follow a specific song.")
+        raise ValueError(f"These shoutouts does not exist in the shoutout folder: {missing_so}! Please insert the same name in the song sheet as given in the shoutout folder if the shoutout should follow a specific song.")
 
-    
+
     perm_mix = np.random.permutation([i for i in range(len(song_so)) if song_so[i] not in sos])
+    # print(perm_mix)
     order = {}
-    song_so_num = [i for i, f in enumerate(song_so) if f is not np.nan]
+    # song_so_num = [i for i, f in enumerate(song_so) if f is not np.nan]
 
     files = os.listdir(org_shoutout_folder)
+    # fiks at den bruger placeringen i csv i stedet for bare at tage dem i den rækkefølge de ligger i mappen
     for i in range(len(files)):
-        if sos[i] in song_so:
-            order[files[i]] = str(song_so_num[0]+1)+".wav"
-            song_so_num = np.delete(song_so_num, 0)
+        if song_so[i] is not np.nan:
+            order[song_so[i]+form[i]] = str(i+1)+".wav"
+            # song_so_num = np.delete(song_so_num, 0)
         else:
-            order[files[i]] = str(perm_mix[0]+1)+".wav"
+            order[files[perm_mix[0]]] = str(i+1)+".wav"
             perm_mix = np.delete(perm_mix, 0)
+
 
     with multiprocessing.Pool() as p:
         for key, value in order.items():
             infile = org_shoutout_folder+"/"+key
             outfile = new_shoutout_folder+"/"+value
 
-            print(infile, outfile)
+            print(infile, "------>", outfile)
 
             p.apply_async(rename_sound, (infile, outfile))
 
         p.close()
         p.join()
+
 
     pd.DataFrame.from_dict(order, orient = "index").to_csv(conversion_csv, index = True, header = False)
 
@@ -217,7 +227,7 @@ def name_own_shoutouts(song_csv = "Songs.csv", org_shoutout_folder = "shoutouts"
 
 
 if __name__ == "__main__":
-    # create_song_csv("Examples/Børne Klub 100/Børne Klub 100.xlsx", csv_name="Songs.csv", diff_song_length=False, n_songs=14)
+    # create_song_csv("Examples/Bad Bitch/klub100.xlsx", csv_name="Songs.csv", diff_song_length=False, n_songs=100)
     # create_shoutout_csv("Examples/Børne Klub 100/Børne Klub 100.xlsx", csv_name="Shoutouts.csv", n_shoutouts=14) 
     # # print(get_trim_vals("test_songs.csv"))
     # mix_song_pos("Songs.csv", diff_song_length = False)
@@ -227,5 +237,5 @@ if __name__ == "__main__":
 
     # create_song_csv("test/template.xlsx", n_songs = 8, csv_name="test/Songs.csv")
     # mix_song_pos(song_csv="test/Songs.csv")
-    name_own_shoutouts(song_csv = "test/Songs.csv", org_shoutout_folder = "test/shoutouts", new_shoutout_folder = "test/shoutouts_numbered", conversion_csv="test/so_to_num.csv")
+    name_own_shoutouts(song_csv = "Examples/Bad Bitch/Songs.csv", org_shoutout_folder = "Examples/Bad Bitch/shoutouts", new_shoutout_folder = "Examples/Bad Bitch/shoutouts_numbered", conversion_csv="Examples/Bad Bitch/so_to_num.csv")
     # rename_sound("test/shoutouts/bada bing.m4a", "test/shoutouts_numbered/3.wav")
